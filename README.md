@@ -1,3 +1,3 @@
 # Minolovac
-\
-zavrsen UI dodaj logiku
+zavrsen UI \
+dodaj logiku
