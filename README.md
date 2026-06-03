@@ -1,3 +1,3 @@
 # Minolovac
-tomahaos
+\n
 zavrsen UI dodaj logiku
