@@ -1,3 +1,3 @@
 # Minolovac
-\n
+'\n'
 zavrsen UI dodaj logiku
