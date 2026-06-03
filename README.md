@@ -1,2 +1,3 @@
 # Minolovac
--tomahaos
+tomahaos
+zavrsen UI dodaj logiku
