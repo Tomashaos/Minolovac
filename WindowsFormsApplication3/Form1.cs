@@ -17,11 +17,70 @@ namespace WindowsFormsApplication3
         private const int CELL_SIZE = 40;
 
         private Button[,] cells = new Button[ROWS, COLS];
+        private int[,] layout = new int[ROWS, COLS];
+
 
         public Form1()
         {
             InitializeComponent();
             BuildBoard();
+            Rasporedi(layout);
+        }
+
+        private int PrebrojSusedne(int x, int y)
+        {
+            int br = 0;
+            for (int i = x - 1; i <= x + 1; i++)
+            {
+                for (int j = y - 1; j <= y + 1; j++)
+                {
+                    if (i == x && j == y) continue;
+                    if (i < 0 || j < 0) continue;
+                    if (i > ROWS - 1 || j > COLS - 1) continue;
+                    if (layout[i, j] == -1) br++;
+                }
+            }
+            return br;
+        }
+
+        private void Rasporedi(int[,] layout)
+        {
+            Random rng = new Random();
+            for (int i = 0; i < ROWS; i++)
+            {
+                for (int j = 0; j < COLS; j++)
+                {
+                    int result = rng.Next(0, 3) == 0 ? 1 : 0;
+                    if(result == 1)
+                    {
+                        layout[i, j] = -1;
+                    }
+                }
+            }
+            for (int i = 0; i < ROWS; i++)
+            {
+                for (int j = 0; j < COLS; j++)
+                {
+                    if (layout[i, j] != -1)
+                    {
+                        layout[i, j] = PrebrojSusedne(i, j);
+                    }
+                }
+            }
+            /*for (int i = 0; i < ROWS; i++)
+            {
+                for (int j = 0; j < COLS; j++)
+                {
+                    if (layout[i, j] == -1)
+                    {
+                        cells[i, j].Text = "💣";
+                    }
+                    else
+                    {
+                        cells[i, j].Text = layout[i, j].ToString();
+                    }
+                }
+            }*/
         }
 
         private void BuildBoard()
@@ -108,6 +167,11 @@ namespace WindowsFormsApplication3
                 else
                     btn.Text = "🚩";
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

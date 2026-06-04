@@ -5,3 +5,10 @@ C:\Users\Ucenik-IK4-15\Documents\Aleksa Marcetic\WindowsFormsApplication3\Window
 C:\Users\Ucenik-IK4-15\Documents\Aleksa Marcetic\WindowsFormsApplication3\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.pdb
 C:\Users\Ucenik-IK4-15\Documents\Aleksa Marcetic\WindowsFormsApplication3\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.exe
 C:\Users\Ucenik-IK4-15\Documents\Aleksa Marcetic\WindowsFormsApplication3\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.pdb
+C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.exe
+C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.pdb
+C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.Form1.resources
+C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.Properties.Resources.resources
+C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.csproj.GenerateResource.Cache
+C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe
+C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.pdb
