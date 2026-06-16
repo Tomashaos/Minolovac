@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
@@ -10,7 +11,6 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
 namespace WindowsFormsApplication3
@@ -22,8 +22,10 @@ namespace WindowsFormsApplication3
         private int CELL_SIZE;
         public Button[,] cells;
         Label lblFlags = new Label();
+        Button btnReset;
 
         Timer timer = new Timer();
+        Form1 form1;
 
         public GraphicDesign(int rOWS, int cOLS, int cELL_SIZE)
         {
@@ -33,8 +35,9 @@ namespace WindowsFormsApplication3
             cells = new Button[ROWS, COLS];
         }
 
-        public void BuildBoard(Form form)
+        public void BuildBoard(Form1 form)
         {
+            form1 = form;
             form.Text = "Minesweeper";
             form.ClientSize = new Size(COLS * CELL_SIZE, ROWS * CELL_SIZE + 60);
             form.FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -47,20 +50,20 @@ namespace WindowsFormsApplication3
             topPanel.BackColor = Color.Silver;
             form.Controls.Add(topPanel);
 
-            //Label lblFlags = new Label();
             lblFlags.Text = "🚩 " + LogicManager.bombs;
             lblFlags.Font = new Font("Segoe UI", 14, FontStyle.Bold);
             lblFlags.Location = new Point(10, 10);
             lblFlags.AutoSize = true;
             topPanel.Controls.Add(lblFlags);
 
-            Button btnReset = new Button();
+            btnReset = new Button();
             btnReset.Text = "🙂";
             btnReset.Font = new Font("Segoe UI", 14);
             btnReset.Size = new Size(45, 35);
             btnReset.Location = new Point((COLS * CELL_SIZE) / 2 - 22, 7);
             btnReset.FlatStyle = FlatStyle.Flat;
             topPanel.Controls.Add(btnReset);
+            btnReset.MouseDown += ClickResetButton;
 
             Label lblTimer = new Label();
             lblTimer.Text = "⏱ 0";
@@ -96,10 +99,11 @@ namespace WindowsFormsApplication3
                     btn.BackColor = Color.LightGray;
                     btn.Tag = new Point(row, col); // čuva poziciju
 
-                    // Placeholder event handleri (logika dolazi kasnije)
+                    // Placeholder event handleri
                     btn.MouseDown += Cell_MouseDown;
 
                     cells[row, col] = btn;
+                    btn.TabStop = false;
                     boardPanel.Controls.Add(btn);
                 }
             }
@@ -109,6 +113,8 @@ namespace WindowsFormsApplication3
         {
             // pronalazi koordinate button-a
             Button btn = (Button)sender;
+            
+
             Point pos = (Point)btn.Tag;
             int row = 0, col = 0;
             for(int i = 0; i < ROWS; i++)
@@ -131,7 +137,32 @@ namespace WindowsFormsApplication3
                 if (btn.Text == "🚩") return;
                 if(value == -1)
                 {
+                    // Igra je zavrsena
                     btn.Text = "💣";
+                    btnReset.Text = "😢";
+                    LogicManager.GameOver();
+                    timer.Stop();
+                    for(int i = 0; i < ROWS; i++)
+                    {
+                        for(int j = 0; j < COLS; j++)
+                        {   
+                            if(LogicManager.layout[i, j] == -1 && cells[i, j].Text == "🚩")
+                            {
+
+                            }
+                            else if (LogicManager.layout[i, j] == -1)
+                            {
+                                cells[i, j].Text = "💣";
+                                cells[i, j].BackColor = Color.White;
+                            }
+                            else if (cells[i, j].Text == "🚩")
+                            {
+                                cells[i, j].BackColor = Color.LightPink;
+                            }
+                            cells[i, j].Enabled = false;
+                        }
+                    }
+                    btn.BackColor = Color.LightPink;
                 }
                 else if (value == 0)
                 {
@@ -149,17 +180,18 @@ namespace WindowsFormsApplication3
                         cells[susedneNule[i], susedneNule[i + 1]].BackColor = Color.White;
                         cells[susedneNule[i], susedneNule[i + 1]].Enabled = false;
                     }
+                    btn.BackColor = Color.White;
                 }
                 else
                 {
                     btn.Text = value.ToString();
+                    btn.BackColor = Color.White;
                 }
-                btn.BackColor = Color.White;
                 btn.Enabled = false;
             }
             else if (e.Button == MouseButtons.Right)
             {
-                // TODO: logika zastave
+                // logika zastave
                 if (btn.Text == "🚩")
                 {
                     btn.Text = "";
@@ -171,7 +203,39 @@ namespace WindowsFormsApplication3
                     btn.Text = "🚩"; 
                     LogicManager.bombs--;
                     lblFlags.Text = "🚩 " + LogicManager.bombs;
+                    // provera pobede
+                    for (int i = 0; i < ROWS; i++)
+                    {
+                        for (int j = 0; j < COLS; j++)
+                        {
+                            if (LogicManager.layout[i, j] == -1 && cells[i, j].Text != "🚩")
+                            {
+                                return;
+                            }
+                            if (LogicManager.layout[i, j] != -1 && cells[i, j].Enabled == true)
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    LogicManager.GameWon();
+                    btnReset.Text = "😎";
+                    for(int i = 0; i < ROWS; i++)
+                    {
+                        for(int j = 0; j < COLS; j++)
+                        {
+                            cells[i, j].Enabled = false;
+                        }
+                    }
                 }
+            }
+        }
+
+        private void ClickResetButton(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                LogicManager.ResetGame();
             }
         }
     }
@@ -184,23 +248,28 @@ namespace WindowsFormsApplication3
         private static int CELL_SIZE;
         public static int[,] layout;
         public static int bombs = 0;
-        private bool gameOver = false;
-        
+        private static bool gameOver = false;
+        private static bool gameWon = false;
 
-        public LogicManager(int rOWS, int cOLS, int cELL_SIZE)
+        static Form1 form1;
+        static GraphicDesign tabla;
+
+        public LogicManager(int rOWS, int cOLS, int cELL_SIZE, Form1 form, GraphicDesign tabla1)
         {
             ROWS = rOWS;
             COLS = cOLS;
             CELL_SIZE = cELL_SIZE;
             layout = new int[rOWS, cOLS]; // -1 za bombe, 0 za prazna polja, 1-8 za broj susednih
             Rasporedi(layout);
+            form1 = form;
+            tabla = tabla1;
         }
         public LogicManager()
         {
 
         }
 
-        private int PrebrojSusedne(int x, int y)
+        private static int PrebrojSusedne(int x, int y)
         {
             int br = 0;
             for (int i = x - 1; i <= x + 1; i++)
@@ -215,14 +284,14 @@ namespace WindowsFormsApplication3
             }
             return br;
         }
-        private void Rasporedi(int[,] layout)
+        public static void Rasporedi(int[,] layout)
         {
             Random rng = new Random();
             for (int i = 0; i < ROWS; i++)
             {
                 for (int j = 0; j < COLS; j++)
                 {
-                    int result = rng.Next(0, 3) == 0 ? 1 : 0;
+                    int result = rng.Next(0, 4) == 0 ? 1 : 0;
                     if (result == 1)
                     {
                         layout[i, j] = -1;
@@ -300,10 +369,29 @@ namespace WindowsFormsApplication3
             return susedneNule;
         }
 
-        public void GameOver()
+        public static void GameOver()
         {
             gameOver = true;
         }
+
+        public static void GameWon()
+        {
+            gameWon = true;
+        }
+
+        public static void ResetGame()
+        {
+            form1.Controls.Clear();
+
+            bombs = 0;
+            gameOver = false;
+            gameWon = false;
+            layout = new int[ROWS, COLS];
+            
+            Rasporedi(layout);
+            tabla.BuildBoard(form1);
+        }
+
     }
 
 
@@ -315,34 +403,13 @@ namespace WindowsFormsApplication3
         private const int COLS = 10;
         private const int CELL_SIZE = 40;
 
-        //private Button[,] cells = new Button[ROWS, COLS];
-        //private int[,] layout = new int[ROWS, COLS];
-
-        LogicManager logic = new LogicManager(ROWS, COLS, CELL_SIZE);
         GraphicDesign tabla = new GraphicDesign(ROWS, COLS, CELL_SIZE);
-        
         
         public Form1()
         {
             InitializeComponent();
+            LogicManager logic = new LogicManager(ROWS, COLS, CELL_SIZE, this, tabla);
             tabla.BuildBoard(this);
-            
-            //BuildBoard();
-            //Rasporedi(layout);
-            /*for (int i = 0; i < ROWS; i++)
-            {
-                for (int j = 0; j < COLS; j++)
-                {
-                    if (LogicManager.layout[i, j] == -1)
-                    {
-                        tabla.cells[i, j].Text = "💣";
-                    }
-                    else
-                    {
-                        tabla.cells[i, j].Text = LogicManager.layout[i, j].ToString();
-                    }
-                }
-            }*/
         }
 
         private void Form1_Load(object sender, EventArgs e)
