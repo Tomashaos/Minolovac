@@ -12,3 +12,14 @@ C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\obj\x86\Debug\Windows
 C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.csproj.GenerateResource.Cache
 C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe
 C:\Users\Ucenik-MAT1-03\Documents\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.pdb
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe.config
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.exe
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\bin\Debug\WindowsFormsApplication3.pdb
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.csproj.AssemblyReference.cache
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.Properties.Resources.resources
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.csproj.GenerateResource.cache
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.csproj.CoreCompileInputs.cache
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.exe
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.pdb
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.exe.config
+D:\SkolskiProjekti\Objektno\Minolovac-main\WindowsFormsApplication3\obj\x86\Debug\WindowsFormsApplication3.GraphicDesign.resources
